@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Academy Championship 2026 - 40 Olympiad Questions</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-color: #1f2937;
+            --border-color: #e5e7eb;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 22px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #4b5563;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .question-box {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 25px 0;
+        }
+
+        .option-item {
+            background: #f9fafb;
+            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .option-item:hover {
+            background: #eef2ff;
+            border-color: var(--primary);
+        }
+
+        .option-item.correct {
+            background: #d1fae5 !important;
+            border-color: var(--success) !important;
+            color: #065f46;
+        }
+
+        .option-item.incorrect {
+            background: #fee2e2 !important;
+            border-color: var(--error) !important;
+            color: #991b1b;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .explanation {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f0fdf4;
+            border-left: 4px solid var(--success);
+            font-size: 13px;
+            color: #166534;
+            display: none;
+            border-radius: 4px;
+        }
+
+        .result-container {
+            text-align: center;
+            display: none;
+        }
+
+        .result-score {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="quiz-screen">
+        <h1>English Academy Championship 2026</h1>
+        <div class="subtitle">Simulasi Olympiad Category (40 Soal)</div>
+        
+        <div class="quiz-header">
+            <span id="question-category">Category</span>
+            <span id="question-counter">Soal 1 dari 40</span>
+        </div>
+
+        <div class="question-box" id="question-text">Memuat pertanyaan...</div>
+
+        <ul class="options-list" id="options-container"></ul>
+
+        <div class="explanation" id="explanation-box"></div>
+
+        <button class="btn" id="next-btn" onclick="nextQuestion()" disabled>Selanjutnya</button>
+    </div>
+
+    <div class="result-container" id="result-screen">
+        <h1>Kuis Selesai!</h1>
+        <p>Luar biasa! Kamu telah menyelesaikan seluruh 40 soal simulasi English Academy Championship.</p>
+        <div class="result-score" id="final-score">0/40</div>
+        <p id="result-message">Terus tingkatkan kemampuan bahasa Inggrismu untuk hasil terbaik di kompetisi!</p>
+        <button class="btn" onclick="restartQuiz()" style="margin-top: 20px;">Ulangi Simulasi</button>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        // --- WORDS & STRUCTURE (1 - 10) ---
+        {
+            category: "Words & Structure",
+            question: "Despite her lack of experience, she delivered a remarkably _______ presentation that impressed the board.",
+            options: ["A) persuasively", "B) persuasive", "C) persuade", "D) persuasion"],
+            answer: 1,
+            explanation: "Persuasive adalah adjective yang menerangkan noun 'presentation'."
+        },
+        {
+            category: "Words & Structure",
+            question: "Had the management anticipated the market shift, they _______ their product line months ago.",
+            options: ["A) will diversify", "B) would diversify", "C) would have diversified", "D) had diversified"],
+            answer: 2,
+            explanation: "Conditional tipe 3 bentuk inversi menggunakan 'would have + V3'."
+        },
+        {
+            category: "Words & Structure",
+            question: "The committee decided to _______ the meeting until further notice due to unexpected circumstances.",
+            options: ["A) put off", "B) put up", "C) put on", "D) put out"],
+            answer: 0,
+            explanation: "'Put off' berarti menunda (postpone)."
+        },
+        {
+            category: "Words & Structure",
+            question: "Not only _______ the examination, but she also achieved the highest score in her cohort.",
+            options: ["A) she passed", "B) did she pass", "C) she has passed", "D) has she passed"],
+            answer: 1,
+            explanation: "Konstruksi 'not only' di awal kalimat memerlukan inversi subjek-kata kerja (did she pass)."
+        },
+        {
+            category: "Words & Structure",
+            question: "The CEO insisted that every employee _______ present at the annual strategic planning seminar.",
+            options: ["A) is", "B) was", "C) be", "D) are"],
+            answer: 2,
+            explanation: "Subjunctive mood setelah kata 'insisted that' menggunakan bentuk dasar (base form) yaitu 'be'."
+        },
+        {
+            category: "Words & Structure",
+            question: "Seldom _______ such dedication and resilience in such a young group of athletes.",
+            options: ["A) we have seen", "B) have we seen", "C) we saw", "D) did we saw"],
+            answer: 1,
+            explanation: "Pernyataan negatif/semi-negatif di awal (seldom) diikuti inversi 'have we seen'."
+        },
+        {
+            category: "Words & Structure",
+            question: "The architectural design of the new library is unique, combining modern elements with _______ traditional aesthetics.",
+            options: ["A) subtle", "B) subtly", "C) subtleness", "D) subtling"],
+            answer: 1,
+            explanation: "Adverb 'subtly' digunakan untuk memodifikasi adjective 'traditional'."
+        },
+        {
+            category: "Words & Structure",
+            question: "Much to our relief, the negotiations resulted in a _______ agreement that satisfied both parties.",
+            options: ["A) mutually", "B) mutual", "C) mutuality", "D) mutualistic"],
+            answer: 1,
+            explanation: "Adjective 'mutual' dibutuhkan untuk memodifikasi noun 'agreement'."
+        },
+        {
+            category: "Words & Structure",
+            question: "By the time the rescue team arrives, the trapped hikers _______ in the cave for over forty-eight hours.",
+            options: ["A) will stay", "B) will be staying", "C) will have stayed", "D) have stayed"],
+            answer: 2,
+            explanation: "Future perfect tense ('will have stayed') digunakan untuk aksi yang akan sudah berlangsung sampai titik waktu tertentu di masa depan."
+        },
+        {
+            category: "Words & Structure",
+            question: "The scientist devoted her entire career to _______ the complex mechanisms of cellular regeneration.",
+            options: ["A) decode", "B) decoding", "C) decoded", "D) be decoding"],
+            answer: 1,
+            explanation: "Frasa 'devoted to' diikuti oleh gerund (-ing)."
+        },
+
+        // --- READING COMPREHENSION (11 - 20) ---
+        {
+            category: "Reading Comprehension",
+            question: "Context: 'The rapid transition to renewable energy sources has significantly decreased carbon emissions in urban areas, yet challenges remain regarding energy storage.' What is the primary implication?",
+            options: [
+                "A) Urban areas have completely solved pollution.",
+                "B) Renewable energy is independent of weather.",
+                "C) Emission reduction is achieved, but storage tech needs improvement.",
+                "D) Fossil fuels remain primary."
+            ],
+            answer: 2,
+            explanation: "Menyiratkan bahwa penurunan emisi berhasil, tetapi teknologi penyimpanan energi masih menjadi tantangan."
+        },
+        {
+            category: "Reading Comprehension",
+            question: "Context: 'Despite the proliferation of digital reading devices, traditional printed books continue to enjoy stable sales, suggesting a tactile preference among consumers.' What does this indicate?",
+            options: [
+                "A) Digital devices have completely replaced print.",
+                "B) Physical touch and feel still drive consumer preference for books.",
+                "C) E-books are too expensive compared to print.",
+                "D) Publishers are phasing out physical books."
+            ],
+            answer: 1,
+            explanation: "Kata 'tactile preference' menunjukkan preferensi pada aspek fisik/sentuhan buku cetak."
+        },
+        {
+            category: "Reading Comprehension",
+            question: "Context: 'Urban agriculture, including rooftop gardens and vertical farming, is no longer a mere novelty; it is becoming a vital component of sustainable city planning.' What is the author's stance?",
+            options: [
+                "A) Urban agriculture is an impractical fad.",
+                "B) Vertical farming should be banned in cities.",
+                "C) Urban farming is becoming essential for sustainable cities.",
+                "D) Rooftop gardens are purely decorative."
+            ],
+            answer: 2,
+            explanation: "Penulis menyatakan urban farming menjadi komponen penting (vital component) dalam perencanaan kota."
+        },
+        {
+            category: "Reading Comprehension",
+            question: "Context: 'While artificial intelligence enhances productivity in creative industries, it simultaneously sparks fierce debates over copyright ownership and artistic authenticity.' What is the main conflict?",
+            options: [
+                "A) AI reduces productivity in creative fields.",
+                "B) Legal and ethical concerns regarding ownership vs. technological efficiency.",
+                "C) AI eliminates the need for human artists entirely.",
+                "D) Artists refuse to use computers."
+            ],
+            answer: 1,
+            explanation: "Konflik utamanya adalah peningkatan produktivitas vs isu hukum/etika hak cipta dan keaslian seni."
+        },
+        {
+            category: "Reading Comprehension",
+            question: "Context: 'The phenomenon of remote work has not only altered corporate real estate demand but has also redefined work-life balance paradigms.' Which statement is supported?",
+            options: [
+                "A) Remote work affects office space and personal-professional dynamics.",
+                "B) Corporate real estate has increased exponentially.",
+                "C) Work-life balance is no longer a topic of discussion.",
+                "D) Employees spend more time commuting now."
+            ],
+            answer: 0,
+            explanation: "Pernyataan mencakup perubahan permintaan real estat korporat dan pergeseran paradigma work-life balance."
+        },
+        {
+            category: "Reading Comprehension",
+            question: "Context: 'Ecotourism aims to preserve natural habitats while educating travelers, yet unregulated tourist influx often accelerates environmental degradation.' What is the paradox?",
+            options: [
+                "A) Ecotourism causes zero impact on nature.",
+                "B) The very activity intended to protect nature can sometimes harm it if unchecked.",
+                "C) Travelers prefer luxury resorts over nature reserves.",
+                "D) Education prevents all environmental damage."
+            ],
+            answer: 1,
+            explanation: "Paradoksnya adalah kegiatan yang dirancang untuk melestarikan alam justru bisa merusaknya jika tidak diatur."
+        },
+        {
+            category: "Reading Comprehension",
+            question: "Context: 'Microplastics have permeated deep-sea ecosystems, raising alarms among marine biologists regarding long-term bioaccumulation.' What can be inferred about microplastics?",
+            options: [
+                "A) They are restricted only to shallow coastal waters.",
+                "B) They pose potential long-term biological threats across marine life.",
+                "C) They dissolve naturally within a few days.",
+                "D) Marine biologists view them as beneficial nutrients."
+            ],
+            answer: 1,
+            explanation: "Bioakumulasi jangka panjang menunjukkan ancaman biologis yang serius."
+        },
+        {
+            category: "Reading Comprehension",
+            question: "Context: 'The implementation of automated traffic control systems has reduced congestion, though it occasionally shifts bottlenecks to adjacent secondary roads.' What is the trade-off?",
+            options: [
+                "A) Total elimination of traffic jams everywhere.",
+                "B) Improvement on main routes offset by localized congestion elsewhere.",
+                "C) Complete failure of automated systems.",
+                "D) Increased reliance on manual police officers."
+            ],
+            answer: 1,
+            explanation: "Kemacetan berkurang di satu titik tetapi bergeser (bottleneck) ke jalan sekunder di sekitarnya."
+        },
+        {
+            category: "Reading Comprehension",
+            question: "Context: 'Heritage languages spoken by immigrant communities often face attrition within three generations as dominant societal languages take precedence.' What is the primary cause of language attrition here?",
+            options: [
+                "A) Strict government bans on minority languages.",
+                "B) The dominance of the mainstream societal language over generations.",
+                "C) Lack of interest in grammar.",
+                "D) Rapid technological advancements."
+            ],
+            answer: 1,
+            explanation: "Bahasa dominan masyarakat sekitar mengambil alih prioritas penggunaan bahasa."
+        },
+        {
+            category: "Reading Comprehension",
+            question: "Context: 'Cryptographic currencies offer unprecedented financial decentralization, yet their massive energy footprint invites severe ecological scrutiny.' What is the core dilemma?",
+            options: [
+                "A) Financial freedom versus high environmental cost.",
+                "B) Complete safety versus total monetary loss.",
+                "C) Government control versus lack of interest.",
+                "D) Slow transactions versus low energy consumption."
+            ],
+            answer: 0,
+            explanation: "Desentralisasi keuangan berbanding terbalik dengan beban energi ekologis yang besar."
+        },
+
+        // --- SPOKEN & WRITTEN EXPRESSION (21 - 30) ---
+        {
+            category: "Spoken & Written Expression",
+            question: "Which sentence is grammatically correct and appropriate for a formal academic essay?",
+            options: [
+                "A) Scarcely had the experiment begun when the power outage occurred.",
+                "B) Hardly the experiment had begun than the power outage occurred.",
+                "C) Scarcely did the experiment begin when the power outage occurred.",
+                "D) No sooner the experiment had begun than the power outage occurred."
+            ],
+            answer: 0,
+            explanation: "Struktur inversi 'Scarcely had + subjek + V3 ... when' adalah yang paling tepat."
+        },
+        {
+            category: "Spoken & Written Expression",
+            question: "Choose the best phrasing to express disagreement politely in a formal business meeting:",
+            options: [
+                "A) You are completely wrong about this budget plan.",
+                "B) I see your point, but perhaps we should look at the financial risks from another angle.",
+                "C) That idea makes no sense whatsoever.",
+                "D) Shut up and listen to my proposal."
+            ],
+            answer: 1,
+            explanation: "Opsi B adalah cara paling sopan dan profesional dalam menyampaikan perbedaan pendapat."
+        },
+        {
+            category: "Spoken & Written Expression",
+            question: "Identify the error-free sentence among the following choices:",
+            options: [
+                "A) Neither the manager nor the assistants was informed about the policy change.",
+                "B) Neither the manager nor the assistants were informed about the policy change.",
+                "C) Neither the manager nor the assistants was informing about the policy change.",
+                "D) Neither the managers nor the assistant were informed about the policy change."
+            ],
+            answer: 1,
+            explanation: "Dalam 'neither... nor...', kata kerja disesuaikan dengan subjek terdekat ('assistants' -> plural 'were')."
+        },
+        {
+            category: "Spoken & Written Expression",
+            question: "Which opening line is most appropriate for a formal complaint letter to a supplier?",
+            options: [
+                "A) Hey there, your products are terrible and ruined my day.",
+                "B) I am writing to formally express my dissatisfaction regarding the delayed shipment of order #4582.",
+                "C) Why did you guys fail to send my stuff on time?",
+                "D) Please fix my order whenever you have free time."
+            ],
+            answer: 1,
+            explanation: "Opsi B menggunakan nada formal, tegas, dan profesional untuk surat keluhan resmi."
+        },
+        {
+            category: "Spoken & Written Expression",
+            question: "Choose the correct sentence structure for expressing a counterfactual hypothesis:",
+            options: [
+                "A) If I knew the outcome, I would have acted differently.",
+                "B) If I had known the outcome, I would have acted differently.",
+                "C) If I would know the outcome, I will act differently.",
+                "D) If I have known the outcome, I would act differently."
+            ],
+            answer: 1,
+            explanation: "Counterfactual masa lalu (Past Unreal Conditional) menggunakan 'If + past perfect, would have + V3'."
+        },
+        {
+            category: "Spoken & Written Expression",
+            question: "Which of these sentences uses the passive voice correctly and formally?",
+            options: [
+                "A) The research paper was written by Dr. Aris Thorne with exceptional precision.",
+                "B) Dr. Aris Thorne wrote the research paper exceptionally.",
+                "C) The paper got written by Dr. Aris Thorne.",
+                "D) Writing the research paper was done by Dr. Aris Thorne."
+            ],
+            answer: 0,
+            explanation: "Opsi A adalah bentuk pasif formal yang jelas dan alami."
+        },
+        {
+            category: "Spoken & Written Expression",
+            question: "How should you gracefully close a formal presentation in front of academic peers?",
+            options: [
+                "A) That's it, I'm done, goodbye.",
+                "B) Thank you for your attention; I would now like to open the floor to any questions or insights.",
+                "C) You can go home now.",
+                "D) I don't care what you think, but thanks."
+            ],
+            answer: 1,
+            explanation: "Opsi B menunjukkan etiket profesional dan mengundang sesi tanya jawab."
+        },
+        {
+            category: "Spoken & Written Expression",
+            question: "Select the sentence with correct parallel structure:",
+            options: [
+                "A) She enjoys reading historical biographies, to paint watercolors, and hiking in the mountains.",
+                "B) She enjoys reading historical biographies, painting watercolors, and hiking in the mountains.",
+                "C) She enjoys to read biographies, painting, and hike.",
+                "D) She enjoys reading, paint, and to hike."
+            ],
+            answer: 1,
+            explanation: "Struktur paralel mengharuskan bentuk kata yang sama (reading, painting, hiking)."
+        },
+        {
+            category: "Spoken & Written Expression",
+            question: "Which option correctly integrates a quotation into a sentence?",
+            options: [
+                "A) Einstein stated that, 'Imagination is more important than knowledge.'",
+                "B) According to Einstein, 'Imagination is more important than knowledge'.",
+                "C) Einstein noted that 'imagination is more important than knowledge.'",
+                "D) Einstein wrote, imagination is more important than knowledge."
+            ],
+            answer: 2,
+            explanation: "Integrasi klausa dengan 'that' tanpa koma di depannya adalah gaya standar penulisan akademis."
+        },
+        {
+            category: "Spoken & Written Expression",
+            question: "Which sentence correctly uses a semicolon?",
+            options: [
+                "A) The conference schedule was packed; consequently, attendees had minimal networking time.",
+                "B) The conference schedule was packed; and attendees had minimal networking time.",
+                "C) Although the schedule was packed; we enjoyed it.",
+                "D) The conference; which was packed, ended late."
+            ],
+            answer: 0,
+            explanation: "Semicolon digunakan sebelum conjunctive adverb seperti 'consequently' untuk menghubungkan dua independent clause."
+        },
+
+        // --- HOTS / HIGHER ORDER THINKING SKILLS (31 - 40) ---
+        {
+            category: "HOTS",
+            question: "If a slogan states, 'Quality is not an act, it is a habit,' which logical evaluation best reflects the argument?",
+            options: [
+                "A) High quality is achieved instantly through testing.",
+                "B) Consistently good results require ingrained organizational routines rather than isolated efforts.",
+                "C) Customer satisfaction depends entirely on marketing.",
+                "D) Habits outweigh profits."
+            ],
+            answer: 1,
+            explanation: "Menekankan bahwa kualitas lahir dari kebiasaan/proses konsisten (routines), bukan aksi sesaat."
+        },
+        {
+            category: "HOTS",
+            question: "Premise: 'All successful enterprises prioritize continuous innovation. Company X has stagnated because it avoided new technologies.' What can be deduced logically?",
+            options: [
+                "A) Company X will soon become a successful enterprise.",
+                "B) Company X does not currently fit the criteria of a successful enterprise based on the premise.",
+                "C) Innovation guarantees failure.",
+                "D) Company X uses too much technology."
+            ],
+            answer: 1,
+            explanation: "Karena perusahaan sukses wajib berinovasi dan Company X stagnan menghindari teknologi, maka Company X tidak memenuhi kriteria tersebut."
+        },
+        {
+            category: "HOTS",
+            question: "Argument: 'Laws should restrict harmful speech to protect societal harmony.' Counter-argument: 'Any restriction on speech sets a dangerous precedent for censorship.' What is the underlying philosophical clash?",
+            options: [
+                "A) Economic growth versus inflation control.",
+                "B) Collective social protection versus absolute individual liberty.",
+                "C) Technological progress versus tradition.",
+                "D) Democratic voting versus dictatorship."
+            ],
+            answer: 1,
+            explanation: "Pertentangan antara perlindungan sosial kolektif dan kebebasan individu mutlak."
+        },
+        {
+            category: "HOTS",
+            question: "Evaluate the fallacy in this statement: 'Everyone uses this smartphone brand, so it must be the absolute best technology available.'",
+            options: [
+                "A) Ad hominem",
+                "B) Bandwagon fallacy (Argumentum ad populum)",
+                "C) False dichotomy",
+                "D) Slippery slope"
+            ],
+            answer: 1,
+            explanation: "Mengasumsikan sesuatu itu benar atau berkualitas tinggi hanya karena banyak orang yang menggunakannya."
+        },
+        {
+            category: "HOTS",
+            question: "Analogy: 'Ecosystem is to biodiversity as a symphony orchestra is to _______.'",
+            options: [
+                "A) silence",
+                "B) instrumentation/harmony",
+                "C) ticket sales",
+                "D) audience"
+            ],
+            answer: 1,
+            explanation: "Ekosistem bergantung pada keanekaragaman hayati (biodiversity), sementara orkestra simfoni bergantung pada keharmonisan alat musik/instrumen."
+        },
+        {
+            category: "HOTS",
+            question: "Premise: 'If automation reduces labor costs, corporations increase profit margins. However, if profit margins soar without wage growth, consumer purchasing power declines.' If premises are true, what is the macro-level risk?",
+            options: [
+                "A) Infinite economic growth for all citizens.",
+                "B) Automation inherently destroying corporate profits.",
+                "C) Wealth accumulation paired with potential economic stagnation due to reduced consumer spending.",
+                "D) Elimination of all taxes."
+            ],
+            answer: 2,
+            explanation: "Keuntungan korporasi naik tapi daya beli konsumen turun, memicu risiko stagnasi ekonomi."
+        },
+        {
+            category: "HOTS",
+            question: "Analyze the reasoning: 'The city built more highways, yet traffic worsened. Therefore, building highways causes traffic.' What crucial factor is likely overlooked?",
+            options: [
+                "A) Induced demand (more roads attract more vehicles).",
+                "B) Road paint color.",
+                "C) Driver age distribution.",
+                "D) Street light electricity."
+            ],
+            answer: 0,
+            explanation: "Fenomena 'induced demand' di mana penambahan jalan justru memancing lebih banyak kendaraan untuk keluar."
+        },
+        {
+            category: "HOTS",
+            question: "Which critique best challenges the premise that 'standardized test scores are the sole indicator of educational quality'?",
+            options: [
+                "A) Tests are printed on paper.",
+                "B) Standardized tests fail to measure critical thinking, creativity, and emotional intelligence.",
+                "C) Students prefer multiple-choice questions.",
+                "D) Teachers dislike grading."
+            ],
+            answer: 1,
+            explanation: "Ujian terstandarisasi memiliki keterbatasan dalam mengukur aspek kreativitas dan kecerdasan emosional."
+        },
+        {
+            category: "HOTS",
+            question: "If an economic policy achieves high GDP growth but drastically increases wealth inequality, how should a critical analyst evaluate it?",
+            options: [
+                "A) As an absolute failure with zero positive metrics.",
+                "B) As a partial success in macro-output, but deeply flawed in distributive justice.",
+                "C) As a utopian policy requiring no changes.",
+                "D) As proof that money does not exist."
+            ],
+            answer: 1,
+            explanation: "Menilai bahwa pertumbuhan makro (GDP) tercapai, tetapi keadilan distributif gagal."
+        },
+        {
+            category: "HOTS",
+            question: "Deduce the logical flaw in: 'We tried the new strategy for one week and sales didn't double, so the entire strategy is useless.'",
+            options: [
+                "A) Hasty generalization / Insufficient time horizon.",
+                "B) Circular reasoning.",
+                "C) Appeal to authority.",
+                "D) Equivocation."
+            ],
+            answer: 0,
+            explanation: "Mengambil kesimpulan terburu-buru (hasty generalization) tanpa memberikan waktu yang cukup bagi strategi untuk berdampak."
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let answered = false;
+
+    const questionCategoryEl = document.getElementById("question-category");
+    const questionCounterEl = document.getElementById("question-counter");
+    const questionTextEl = document.getElementById("question-text");
+    const optionsContainerEl = document.getElementById("options-container");
+    const explanationBoxEl = document.getElementById("explanation-box");
+    const nextBtnEl = document.getElementById("next-btn");
+    
+    const quizScreenEl = document.getElementById("quiz-screen");
+    const resultScreenEl = document.getElementById("result-screen");
+    const finalScoreEl = document.getElementById("final-score");
+
+    function loadQuestion() {
+        answered = false;
+        explanationBoxEl.style.display = "none";
+        nextBtnEl.disabled = true;
+        
+        const currentData = quizData[currentQuestionIndex];
+        questionCategoryEl.textContent = currentData.category;
+        questionCounterEl.textContent = `Soal ${currentQuestionIndex + 1} dari ${quizData.length}`;
+        questionTextEl.textContent = currentData.question;
+
+        optionsContainerEl.innerHTML = "";
+        currentData.options.forEach((option, index) => {
+            const li = document.createElement("li");
+            li.className = "option-item";
+            li.textContent = option;
+            li.onclick = () => selectOption(index, li);
+            optionsContainerEl.appendChild(li);
+        });
+    }
+
+    function selectOption(selectedIndex, element) {
+        if (answered) return;
+        answered = true;
+
+        const currentData = quizData[currentQuestionIndex];
+        const options = optionsContainerEl.children;
+
+        if (selectedIndex === currentData.answer) {
+            element.classList.add("correct");
+            score++;
+        } else {
+            element.classList.add("incorrect");
+            options[currentData.answer].classList.add("correct");
+        }
+
+        explanationBoxEl.textContent = currentData.explanation;
+        explanationBoxEl.style.display = "block";
+        nextBtnEl.disabled = false;
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) {
+            loadQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        quizScreenEl.style.display = "none";
+        resultScreenEl.style.display = "block";
+        finalScoreEl.textContent = `${score} / ${quizData.length}`;
+    }
+
+    function restartQuiz() {
+        currentQuestionIndex = 0;
+        score = 0;
+        resultScreenEl.style.display = "none";
+        quizScreenEl.style.display = "block";
+        loadQuestion();
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
